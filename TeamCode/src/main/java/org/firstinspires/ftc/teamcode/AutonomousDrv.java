@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@Autonomous(name = "RRAuto")
+@TeleOP(name = "TestOp")
 public class AutonomousDrv extends LinearOpMode{
     RobotDrive robot = new RobotDrive();
     public void runOpMode()
