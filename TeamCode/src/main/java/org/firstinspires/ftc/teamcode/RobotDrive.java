@@ -23,17 +23,17 @@ public class RobotDrive {
     private DcMotorEx leftFront, leftRear, rightFront, rightRear;
     private DcMotorEx[] motors = new DcMotorEx[4];
     private BNO055IMU imu = null;
-    public DistanceSensor dist = null;
+    public ColorSensor dist = null;
     public ColorSensor colorSensor = null;
 
     //Accessory motors/devices like intake and chainlift
-    public DcMotorEx intakeMotor;
-    public DcMotorEx chainLift;
-    public Servo dropArm; //servo that drops the intake wheels
-    public DcMotorEx flyWheel;
-    public DcMotorEx wobbleArm;
-    public Servo wobbleClaw;
-    public DigitalChannel armTrigger;
+    public DcMotorEx liftMotor;
+//    public DcMotorEx chainLift;
+//    public Servo dropArm; //servo that drops the intake wheels
+//    public DcMotorEx flyWheel;
+//    public DcMotorEx wobbleArm;
+//    public Servo wobbleClaw;
+//    public DigitalChannel armTrigger;
 
     //Default motor power levels for wheels
     public double motorPower = 1;
@@ -56,11 +56,11 @@ public class RobotDrive {
         leftRear = (DcMotorEx) hardwareMap.dcMotor.get("back_left_motor");
         rightRear = (DcMotorEx) hardwareMap.dcMotor.get("back_right_motor");
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-//        dist = hardwareMap.get(DistanceSensor.class, "distance");
+        dist = hardwareMap.get(ColorSensor.class, "lift_Distance");
 //        colorSensor = hardwareMap.get(ColorSensor.class, "floor_color");
 
 //        //Initalize accessory hardware from hardware map
-//        intakeMotor = (DcMotorEx)hardwareMap.dcMotor.get("intake_motor");
+        liftMotor = (DcMotorEx) hardwareMap.dcMotor.get("lift_motor");
 //        chainLift = (DcMotorEx)hardwareMap.dcMotor.get("chain_motor");
 //        dropArm = (Servo)hardwareMap.servo.get("drop_arm");
 //        flyWheel = (DcMotorEx)hardwareMap.dcMotor.get("flywheel_motor");

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+        import com.acmerobotics.roadrunner.geometry.Pose2d;
+        import com.acmerobotics.roadrunner.trajectory.Trajectory;
         import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
         import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
         import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -7,13 +9,15 @@ package org.firstinspires.ftc.teamcode;
 
         import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
         import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+        import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous(name = "RRTesting")
 public class RRAutoTest extends LinearOpMode{
-    SampleMecanumDrive robot = new SampleMecanumDrive(hardwaremap);
     public void runOpMode()
     {
-        Trajectory myTrajectory = robot.trajectoryBuilder(new pose2d())
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+
+        Trajectory myTrajectory = drive.trajectoryBuilder(new Pose2d())
                 .strafeRight(10)
                 .forward(5)
                 .build();
@@ -23,6 +27,6 @@ public class RRAutoTest extends LinearOpMode{
 
         if(isStopRequested()) return;
 
-        robot.followTrajectory(myTrajectory);
+        drive.followTrajectory(myTrajectory);
     }
 }
