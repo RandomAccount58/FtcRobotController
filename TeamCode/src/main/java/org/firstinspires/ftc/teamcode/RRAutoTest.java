@@ -18,11 +18,11 @@ public class RRAutoTest extends LinearOpMode{
                 .forward(5)
                 .build();
 
-        
+
         waitForStart();
 
         if(isStopRequested()) return;
 
-        drive.followTrajectory(myTrajectory);
+        robot.followTrajectory(myTrajectory);
     }
 }
