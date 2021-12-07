@@ -22,9 +22,10 @@ public class TeleOpTest extends LinearOpMode{
 
         robot.mixDrive(forward, strafe, rotate);
 
-        if (gamepad1.dpad_up)
+        if (gamepad1.dpad_up) {
             robot.liftMotor.setPower(1);
-        else
+            sleep(1);
+        }else
             robot.liftMotor.setPower(0);
 
         if (gamepad1.dpad_down)
