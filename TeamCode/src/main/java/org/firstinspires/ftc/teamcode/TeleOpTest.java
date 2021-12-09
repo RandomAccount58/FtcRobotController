@@ -22,16 +22,13 @@ public class TeleOpTest extends LinearOpMode{
 
         robot.mixDrive(forward, strafe, rotate);
 
-        if (gamepad1.dpad_up) {
+        if (gamepad1.dpad_up)
             robot.liftMotor.setPower(1);
-            sleep(1);
-        }else
+        else if(gamepad1.dpad_down)
+            robot.liftMotor.setPower(-1);
+        else if((!gamepad1.dpad_down) && (!gamepad1.dpad_up))
             robot.liftMotor.setPower(0);
 
-        if (gamepad1.dpad_down)
-            robot.liftMotor.setPower(-1);
-        else
-            robot.liftMotor.setPower(0);
 
         telemetry.addData("Distance: ","%.3f",((DistanceSensor) robot.dist).getDistance(DistanceUnit.CM));
         telemetry.addData("UP: ",gamepad1.dpad_up);
