@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -11,10 +12,13 @@ public class TeleOpTest extends LinearOpMode{
     public void runOpMode()
     {
         waitForStart();
+        robot.initializeRobot(hardwareMap, telemetry, RobotDrive.allianceColor.blue);
+        robot.liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         while (opModeIsActive())
     {
-        robot.initializeRobot(hardwareMap, telemetry, RobotDrive.allianceColor.blue);
+
 
         double forward = gamepad1.left_stick_y * -1; //the gamepad is reversed thus the -1
         double strafe = gamepad1.left_stick_x;
@@ -22,7 +26,7 @@ public class TeleOpTest extends LinearOpMode{
 
         robot.mixDrive(forward, strafe, rotate);
 
-        if (gamepad1.dpad_up)
+        if (gamepad1.dpad_up && robot.liftMotor.getCurrentPosition() <= 5870)
             robot.liftMotor.setPower(1);
         else if(gamepad1.dpad_down)
             robot.liftMotor.setPower(-1);
@@ -30,9 +34,10 @@ public class TeleOpTest extends LinearOpMode{
             robot.liftMotor.setPower(0);
 
 
-        telemetry.addData("Distance: ","%.3f",((DistanceSensor) robot.dist).getDistance(DistanceUnit.CM));
-        telemetry.addData("UP: ",gamepad1.dpad_up);
-        telemetry.addData("DOWN: ",gamepad1.dpad_down);
+
+
+        telemetry.addData("Distance: ","%.3f",((DistanceSensor) robot.dist).getDistance(DistanceUnit.INCH));
+        telemetry.addData("LiftEncoder",robot.liftMotor.getCurrentPosition());
         telemetry.update();
     }
     }

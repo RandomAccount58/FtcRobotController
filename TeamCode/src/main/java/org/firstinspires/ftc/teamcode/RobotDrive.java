@@ -87,6 +87,9 @@ public class RobotDrive {
         //rightFront.setDirection(DcMotor.Direction.REVERSE);
         //rightRear.setDirection(DcMotor.Direction.REVERSE);
 
+        //Initalize the accessory devices
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
         //Initialize IMU
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
