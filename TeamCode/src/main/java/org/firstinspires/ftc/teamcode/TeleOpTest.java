@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,6 +16,7 @@ public class TeleOpTest extends LinearOpMode{
         robot.initializeRobot(hardwareMap, telemetry, RobotDrive.allianceColor.blue);
         robot.liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_RAINBOW_PALETTE);
 
         while (opModeIsActive())
     {
@@ -32,6 +34,8 @@ public class TeleOpTest extends LinearOpMode{
             robot.liftMotor.setPower(-1);
         else if((!gamepad1.dpad_down) && (!gamepad1.dpad_up))
             robot.liftMotor.setPower(0);
+
+        ;
 
 
 

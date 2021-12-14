@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.hardware.*;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -25,6 +26,7 @@ public class RobotDrive {
     private BNO055IMU imu = null;
     public ColorSensor dist = null;
     public ColorSensor colorSensor = null;
+    public RevBlinkinLedDriver lights = null;
 
     //Accessory motors/devices like intake and chainlift
     public DcMotorEx liftMotor;
@@ -61,6 +63,7 @@ public class RobotDrive {
 
 //        //Initalize accessory hardware from hardware map
         liftMotor = (DcMotorEx) hardwareMap.dcMotor.get("lift_motor");
+        lights = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 //        chainLift = (DcMotorEx)hardwareMap.dcMotor.get("chain_motor");
 //        dropArm = (Servo)hardwareMap.servo.get("drop_arm");
 //        flyWheel = (DcMotorEx)hardwareMap.dcMotor.get("flywheel_motor");
