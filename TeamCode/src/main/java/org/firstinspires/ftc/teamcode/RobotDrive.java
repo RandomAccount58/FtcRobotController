@@ -24,7 +24,7 @@ public class RobotDrive {
     private DcMotorEx leftFront, leftRear, rightFront, rightRear;
     private DcMotorEx[] motors = new DcMotorEx[4];
     private BNO055IMU imu = null;
-    public ColorSensor dist = null;
+    public DistanceSensor dist = null;
     public ColorSensor colorSensor = null;
     public RevBlinkinLedDriver lights = null;
 
@@ -58,7 +58,7 @@ public class RobotDrive {
         leftRear = (DcMotorEx) hardwareMap.dcMotor.get("back_left_motor");
         rightRear = (DcMotorEx) hardwareMap.dcMotor.get("back_right_motor");
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-        dist = hardwareMap.get(ColorSensor.class, "lift_Distance");
+        dist = hardwareMap.get(DistanceSensor.class, "lift_Distance");
 //        colorSensor = hardwareMap.get(ColorSensor.class, "floor_color");
 
 //        //Initalize accessory hardware from hardware map
