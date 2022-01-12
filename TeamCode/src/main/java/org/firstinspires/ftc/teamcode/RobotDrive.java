@@ -22,7 +22,7 @@ public class RobotDrive {
 
     //Hardware
     private DcMotorEx leftFront, leftRear, rightFront, rightRear;
-    private DcMotorEx[] motors = new DcMotorEx[4];
+    public DcMotorEx[] motors = new DcMotorEx[4];
     private BNO055IMU imu = null;
     public DistanceSensor dist = null;
     public ColorSensor colorSensor = null;
@@ -31,7 +31,7 @@ public class RobotDrive {
     //Accessory motors/devices like intake and chainlift
     public DcMotorEx liftMotor;
 //    public DcMotorEx chainLift;
-//    public Servo dropArm; //servo that drops the intake wheels
+   public Servo Grabber; //servo that drops the intake wheels
 //    public DcMotorEx flyWheel;
 //    public DcMotorEx wobbleArm;
 //    public Servo wobbleClaw;
@@ -65,7 +65,7 @@ public class RobotDrive {
         liftMotor = (DcMotorEx) hardwareMap.dcMotor.get("lift_motor");
         lights = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 //        chainLift = (DcMotorEx)hardwareMap.dcMotor.get("chain_motor");
-//        dropArm = (Servo)hardwareMap.servo.get("drop_arm");
+        Grabber = (Servo)hardwareMap.servo.get("block_claw");
 //        flyWheel = (DcMotorEx)hardwareMap.dcMotor.get("flywheel_motor");
 //        wobbleArm = (DcMotorEx)hardwareMap.dcMotor.get("wobble_arm");
 //        wobbleClaw = (Servo)hardwareMap.servo.get("wobble_servo");
