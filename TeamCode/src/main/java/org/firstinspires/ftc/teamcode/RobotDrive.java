@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.hardware.*;
@@ -30,8 +31,9 @@ public class RobotDrive {
 
     //Accessory motors/devices like intake and chainlift
     public DcMotorEx liftMotor;
-//    public DcMotorEx chainLift;
-   public Servo Grabber; //servo that drops the intake wheels
+    public DcMotorEx duckMotor;
+    public Servo Grabber; //servo that grabs onto the blocks
+    public Servo dropArm;
 //    public DcMotorEx flyWheel;
 //    public DcMotorEx wobbleArm;
 //    public Servo wobbleClaw;
@@ -58,12 +60,14 @@ public class RobotDrive {
         leftRear = (DcMotorEx) hardwareMap.dcMotor.get("back_left_motor");
         rightRear = (DcMotorEx) hardwareMap.dcMotor.get("back_right_motor");
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-        dist = hardwareMap.get(DistanceSensor.class, "lift_Distance");
+        dist = hardwareMap.get(Rev2mDistanceSensor.class, "lift_Distance");
 //        colorSensor = hardwareMap.get(ColorSensor.class, "floor_color");
 
 //        //Initalize accessory hardware from hardware map
         liftMotor = (DcMotorEx) hardwareMap.dcMotor.get("lift_motor");
+        duckMotor = (DcMotorEx) hardwareMap.dcMotor.get("duck_motor");
         lights = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+        dropArm = hardwareMap.servo.get("drop_arm");
 //        chainLift = (DcMotorEx)hardwareMap.dcMotor.get("chain_motor");
         Grabber = (Servo)hardwareMap.servo.get("block_claw");
 //        flyWheel = (DcMotorEx)hardwareMap.dcMotor.get("flywheel_motor");
