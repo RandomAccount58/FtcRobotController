@@ -23,7 +23,13 @@ public class TeleOpTest extends LinearOpMode{
         robot.initializeRobot(hardwareMap, telemetry, RobotDrive.allianceColor.blue);
         robot.liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.AQUA);
+
+        //set led colors based on what alliance you are on
+        if(robot.teamColor == RobotDrive.allianceColor.blue)
+            robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
+        else
+            robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
+
         //drop the arm uppon initalization dont got to do it here just testing do it in auto
         robot.dropArm.setPosition(1);
 
@@ -59,7 +65,13 @@ public class TeleOpTest extends LinearOpMode{
                     robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.ORANGE);
                 if(lvl == 2)
                     robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
-
+            }
+            if(!setLevel)
+            {
+                if(robot.teamColor == RobotDrive.allianceColor.blue)
+                    robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
+                else
+                    robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
             }
 
             //when a trigger is pressed cancel auto lvl
@@ -72,6 +84,7 @@ public class TeleOpTest extends LinearOpMode{
                 robot.liftMotor.setPower(gamepad2.right_trigger);
             } else if (robot.dist.getDistance(DistanceUnit.INCH) <= 2 && !setLevel) {
                 robot.liftMotor.setPower(-gamepad2.left_trigger);
+
             } else if ((!(robot.liftMotor.getCurrentPosition() <= -4400) || (robot.dist.getDistance(DistanceUnit.INCH) <= 2)) && !setLevel){
                 robot.liftMotor.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
             }
@@ -88,7 +101,7 @@ public class TeleOpTest extends LinearOpMode{
 
 
         //if the robot arm is at the base position reset arm encoder to ensure accuracy
-        if(robot.dist.getDistance(DistanceUnit.INCH) <= 1.8) {
+        if(robot.dist.getDistance(DistanceUnit.INCH) <= 2) {
             robot.liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
