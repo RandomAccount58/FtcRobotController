@@ -11,7 +11,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class TeleOpTest extends LinearOpMode{
     private boolean buttonPressed;
     private boolean setLevel = false;
-    private boolean setLvlToggle = false;
     private int lvl;
     private boolean lvlWait = false;
     private int liftTolerance = 100;
@@ -37,51 +36,41 @@ public class TeleOpTest extends LinearOpMode{
 
             robot.mixDrive(forward, strafe, rotate);
 
-
-            //toggle either to set the level auto or manual
-            if(gamepad2.y && !setLvlToggle) {
-                setLevel = true;
-                setLvlToggle = true;
-            } else if(gamepad2.y && !setLvlToggle) {
-                setLevel = false;
-                setLvlToggle = true;
-            }else if(!gamepad2.y)
-                setLvlToggle = false;
-
-
-            //up is left trigger aka moving the motor in the negative direction
-            //set the power and direction of lift motor by subtracting the two values also check to see if robot is at top or bottom
-            if (robot.liftMotor.getCurrentPosition() <= -4700) {
-                robot.liftMotor.setPower(gamepad2.right_trigger);
-                setLevel = false;
-            } else if (robot.dist.getDistance(DistanceUnit.INCH) <= 1.8) {
-                robot.liftMotor.setPower(-gamepad2.left_trigger);
-                setLevel = false;
-            } else if ((!(robot.liftMotor.getCurrentPosition() <= -4700) || (robot.dist.getDistance(DistanceUnit.INCH) <= 1.8))){
-                robot.liftMotor.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
-                setLevel = false;
+            //change the auto level to a diffrent one and check if it has being held down
+            if(!gamepad2.left_bumper && !gamepad2.right_bumper)
+                lvlWait = true;
+            else if(gamepad2.left_bumper && lvl < 2 && lvlWait) {
+                lvlWait = false;
+                lvl++;
+            }else if(gamepad2.right_bumper && lvl > 0 && lvlWait) {
+                lvlWait = false;
+                lvl--;
             }
 
 
-            //change the auto level to a diffrent one and check if it has being held down
-        if(!gamepad2.left_bumper && !gamepad2.right_bumper)
-            lvlWait = true;
-        else if(gamepad2.left_bumper && lvl < 2 && lvlWait) {
-            lvlWait = false;
-            lvl++;
-        }else if(gamepad2.right_bumper && lvl > 0 && lvlWait) {
-            lvlWait = false;
-            lvl--;
-        }
+            //when a trigger is pressed cancel auto lvl
+            if(gamepad2.left_trigger >=0.1 || gamepad2.right_trigger >= 0.1)
+                setLevel = false;
 
-        //check if its at the right level and stop if it is
-        if(setLevel)
-            if(robot.liftMotor.getCurrentPosition() < levels[lvl] && robot.liftMotor.getCurrentPosition() > levels[lvl] - liftTolerance)
-                robot.liftMotor.setPower(0);
-            else if(robot.liftMotor.getCurrentPosition() < levels[lvl] - liftTolerance)
-                robot.liftMotor.setPower(1);
-            else if(robot.liftMotor.getCurrentPosition() > levels[lvl])
-                robot.liftMotor.setPower(-1);
+            //up is left trigger aka moving the motor in the negative direction
+            //set the power and direction of lift motor by subtracting the two values also check to see if robot is at top or bottom
+            if (robot.liftMotor.getCurrentPosition() <= -4700 && !setLevel) {
+                robot.liftMotor.setPower(gamepad2.right_trigger);
+            } else if (robot.dist.getDistance(DistanceUnit.INCH) <= 1.8 && !setLevel) {
+                robot.liftMotor.setPower(-gamepad2.left_trigger);
+            } else if ((!(robot.liftMotor.getCurrentPosition() <= -4700) || (robot.dist.getDistance(DistanceUnit.INCH) <= 1.8)) && !setLevel){
+                robot.liftMotor.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+            }
+
+            //check if its at the right level and stop if it is
+            if(setLevel) {
+                if (robot.liftMotor.getCurrentPosition() < levels[lvl] && robot.liftMotor.getCurrentPosition() > levels[lvl] - liftTolerance)
+                    robot.liftMotor.setPower(0);
+                else if (robot.liftMotor.getCurrentPosition() < levels[lvl] - liftTolerance)
+                    robot.liftMotor.setPower(1);
+                else if (robot.liftMotor.getCurrentPosition() > levels[lvl])
+                    robot.liftMotor.setPower(-1);
+            }
 
 
         //if the robot arm is at the base position reset arm encoder to ensure accuracy
