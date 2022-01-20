@@ -68,20 +68,7 @@ public class RobotDrive {
         duckMotor = (DcMotorEx) hardwareMap.dcMotor.get("duck_motor");
         lights = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         dropArm = hardwareMap.servo.get("drop_arm");
-//        chainLift = (DcMotorEx)hardwareMap.dcMotor.get("chain_motor");
         Grabber = (Servo)hardwareMap.servo.get("block_claw");
-//        flyWheel = (DcMotorEx)hardwareMap.dcMotor.get("flywheel_motor");
-//        wobbleArm = (DcMotorEx)hardwareMap.dcMotor.get("wobble_arm");
-//        wobbleClaw = (Servo)hardwareMap.servo.get("wobble_servo");
-//        armTrigger = hardwareMap.get(DigitalChannel.class, "Arm_Button");
-//        armTrigger.setMode(DigitalChannel.Mode.INPUT);
-
-
-        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
 
         //Sensor Initialization
         if (colorSensor instanceof SwitchableLight) {
