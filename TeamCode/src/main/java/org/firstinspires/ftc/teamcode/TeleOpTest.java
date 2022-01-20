@@ -41,12 +41,26 @@ public class TeleOpTest extends LinearOpMode{
                 lvlWait = true;
             else if(gamepad2.left_bumper && lvl < 2 && lvlWait) {
                 lvlWait = false;
+                setLevel = true;
                 lvl++;
             }else if(gamepad2.right_bumper && lvl > 0 && lvlWait) {
                 lvlWait = false;
+                setLevel = true;
                 lvl--;
             }
 
+
+            //set the led lights for each level
+            if(setLevel)
+            {
+                if(lvl == 0)
+                    robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+                if(lvl == 1)
+                    robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.ORANGE);
+                if(lvl == 2)
+                    robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
+
+            }
 
             //when a trigger is pressed cancel auto lvl
             if(gamepad2.left_trigger >=0.1 || gamepad2.right_trigger >= 0.1)
@@ -54,11 +68,11 @@ public class TeleOpTest extends LinearOpMode{
 
             //up is left trigger aka moving the motor in the negative direction
             //set the power and direction of lift motor by subtracting the two values also check to see if robot is at top or bottom
-            if (robot.liftMotor.getCurrentPosition() <= -4700 && !setLevel) {
+            if (robot.liftMotor.getCurrentPosition() <= -4400 && !setLevel) {
                 robot.liftMotor.setPower(gamepad2.right_trigger);
-            } else if (robot.dist.getDistance(DistanceUnit.INCH) <= 1.8 && !setLevel) {
+            } else if (robot.dist.getDistance(DistanceUnit.INCH) <= 2 && !setLevel) {
                 robot.liftMotor.setPower(-gamepad2.left_trigger);
-            } else if ((!(robot.liftMotor.getCurrentPosition() <= -4700) || (robot.dist.getDistance(DistanceUnit.INCH) <= 1.8)) && !setLevel){
+            } else if ((!(robot.liftMotor.getCurrentPosition() <= -4400) || (robot.dist.getDistance(DistanceUnit.INCH) <= 2)) && !setLevel){
                 robot.liftMotor.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
             }
 
