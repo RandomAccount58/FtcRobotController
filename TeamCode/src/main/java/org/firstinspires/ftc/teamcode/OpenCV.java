@@ -30,7 +30,7 @@ public class OpenCV extends OpenCvPipeline {
             new Point(140, 35),
             new Point(200, 75));
 
-    static double PCTHRESHOLD = .4; // might want to change
+    static double PCTHRESHOLD = .4; //TODO might want to change
 
     public OpenCV (Telemetry t) { telemetry = t;}
 

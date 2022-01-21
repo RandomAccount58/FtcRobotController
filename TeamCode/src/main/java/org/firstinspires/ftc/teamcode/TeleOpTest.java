@@ -125,7 +125,7 @@ public class TeleOpTest extends LinearOpMode{
             robot.Grabber.setPosition(0);
             buttonPressed = true;
         } else if(gamepad2.x && robot.Grabber.getPosition() < 0.5 && buttonPressed == false) {
-            robot.Grabber.setPosition(1);
+            robot.Grabber.setPosition(0.75);
             buttonPressed = true;
         }else if(!gamepad2.x)
             buttonPressed = false;
