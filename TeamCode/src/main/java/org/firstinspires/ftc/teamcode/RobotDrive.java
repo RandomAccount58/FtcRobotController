@@ -110,4 +110,14 @@ public class RobotDrive {
         leftRear.setPower(backLeftSpeed);
         rightRear.setPower(backRightSpeed);
     }
+
+    void initLift()
+    {
+        while (dist.getDistance(DistanceUnit.INCH) > 2) {
+            liftMotor.setPower(-1);
+        }
+        liftMotor.setPower(0);
+        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
 }

@@ -90,14 +90,14 @@ public class TeleOpTest extends LinearOpMode{
             }
 
             //check if its at the right level and stop if it is
-            if(setLevel) {
-                if (robot.liftMotor.getCurrentPosition() < levels[lvl] && robot.liftMotor.getCurrentPosition() > levels[lvl] - liftTolerance)
-                    robot.liftMotor.setPower(0);
-                else if (robot.liftMotor.getCurrentPosition() < levels[lvl] - liftTolerance)
-                    robot.liftMotor.setPower(1);
-                else if (robot.liftMotor.getCurrentPosition() > levels[lvl])
-                    robot.liftMotor.setPower(-1);
-            }
+//            if(setLevel) {
+//                if (robot.liftMotor.getCurrentPosition() < levels[lvl] && robot.liftMotor.getCurrentPosition() > levels[lvl] - liftTolerance)
+//                    robot.liftMotor.setPower(0);
+//                else if (robot.liftMotor.getCurrentPosition() < levels[lvl] - liftTolerance)
+//                    robot.liftMotor.setPower(1);
+//                else if (robot.liftMotor.getCurrentPosition() > levels[lvl])
+//                    robot.liftMotor.setPower(-1);
+//            }
 
 
         //if the robot arm is at the base position reset arm encoder to ensure accuracy
