@@ -9,10 +9,16 @@ java {
 
 repositories {
     maven { url 'https://jitpack.io' }
+<<<<<<< Updated upstream
     maven { url = 'https://maven.brott.dev/' }
+=======
+>>>>>>> Stashed changes
 }
 
 dependencies {
     implementation 'com.github.NoahBres:MeepMeep:2.0.0'
+<<<<<<< Updated upstream
     implementation 'com.acmerobotics.roadrunner:core:0.5.4'
+=======
+>>>>>>> Stashed changes
 }
