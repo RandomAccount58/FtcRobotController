@@ -43,7 +43,7 @@ public class RedAlianceFar extends LinearOpMode {
                 break;
             case MIDDLE:
                 break;
- 
+
         }
         while (opModeIsActive())
         {
