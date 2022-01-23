@@ -17,40 +17,49 @@ public class OpenCV extends OpenCvPipeline {
     public enum Location {
         LEFT,
         RIGHT,
+        MIDDLE,
         UNKNOWN
     }
     private Location location;
 
     // regions of interest (needs changes prob)
     static final Rect LEFTREGION = new Rect(
-            new Point(60, 35),
-            new Point(120, 75));
+            new Point(0, 35),
+            new Point(106, 75));
+
+    static final Rect MIDREGION = new Rect(
+            new Point(107, 35),
+            new Point(213, 75));
 
     static final Rect RIGHTREGION = new Rect(
-            new Point(140, 35),
-            new Point(200, 75));
+            new Point(213, 35),
+            new Point(320, 75));
 
-    static double PCTHRESHOLD = .4; //TODO might want to change
+    static double PICTURESHOLD = .4; //TODO might want to change
 
     public OpenCV (Telemetry t) { telemetry = t;}
+
 
     public Mat processFrame(Mat frame) {
         Imgproc.cvtColor(frame, mat, Imgproc.COLOR_RGB2HSV);
 
         // yellow scale
 
-        Scalar low_ylw = new Scalar(23, 50, 70);
-        Scalar high_ylw = new Scalar(32, 255, 255);
-        Core.inRange(mat, low_ylw, high_ylw, mat);
+        Scalar low_ylw = new Scalar(30, 216, 127); //orange low hsv(33, 85%, 50%)
+        Scalar high_ylw = new Scalar(36, 255, 255); //orange high hsv(36, 100%, 100%)
+        Core.inRange(mat, low_ylw, high_ylw, mat); //create a mask of anything considered "Orange"
 
         // region
 
-        Mat left = mat.submat((LEFTREGION));
-        Mat right = mat.submat((RIGHTREGION));
+        Mat left = mat.submat(LEFTREGION);
+        Mat right = mat.submat(RIGHTREGION);
+        Mat middle = mat.submat(MIDREGION);
         double leftV = Core.sumElems(left).val[0] /LEFTREGION.area() / 255;
         double rightV = Core.sumElems(right).val[0] / RIGHTREGION.area() / 255;
+        double middleV = Core.sumElems(middle).val[0] / MIDREGION.area() / 255;
         left.release();
         right.release();
+        middle.release();
 
         // return some info
 
@@ -61,30 +70,31 @@ public class OpenCV extends OpenCvPipeline {
 
         // where stone?
 
-        boolean capstoneLeft = leftV > PCTHRESHOLD;
-        boolean capstoneRight = rightV > PCTHRESHOLD;
+        boolean tseLeft = leftV > PICTURESHOLD;
+        boolean tseRight = rightV > PICTURESHOLD;
+        boolean tseMiddle = middleV > PICTURESHOLD;
 
-        if (capstoneLeft && capstoneRight) {
-            location = Location.UNKNOWN;
-            telemetry.addData("capstone location", "unknown");
-        }
-        if (capstoneLeft) {
-            location = Location.RIGHT;
-            telemetry.addData("capstone location", "right");
-        }
-        else{
+        if (tseLeft) {
             location = Location.LEFT;
             telemetry.addData("capstone location", "left");
+        } else if(tseMiddle) {
+            location = Location.MIDDLE;
+            telemetry.addData("capstone location", "middle");
+        } else if(tseRight) {
+            location = Location.RIGHT;
+            telemetry.addData("capstone location", "right");
         }
         telemetry.update();
 
         // bestow knowledge
 
+        //converts image back to normal and put the rectangles on the screen
         Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB);
-        Scalar colorCapstone = new Scalar(0, 255, 0);
-        Scalar colorStone = new Scalar(255, 0, 0);
-        Imgproc.rectangle(mat, LEFTREGION, location == Location.LEFT? colorCapstone:colorStone);
-        Imgproc.rectangle(mat, RIGHTREGION, location == Location.RIGHT? colorCapstone:colorStone);
+        Scalar tseFound = new Scalar(0, 255, 0);
+        Scalar noTSE = new Scalar(255, 0, 0);
+        Imgproc.rectangle(mat, LEFTREGION, location == Location.LEFT? tseFound:noTSE);
+        Imgproc.rectangle(mat, RIGHTREGION, location == Location.RIGHT? tseFound:noTSE);
+        Imgproc.rectangle(mat, MIDREGION, location == Location.MIDDLE? tseFound:noTSE);
 
         return mat;
     }

@@ -5,7 +5,7 @@ public class MultiThread implements Runnable{
     private Thread t;
     private String threadName;
     private int height;
-    private final int tolerance = 50;
+    private final int TOLERANCE = 50;
     private RobotDrive robot;
     private boolean exit = false;
     public boolean running = false;
@@ -18,9 +18,9 @@ public class MultiThread implements Runnable{
     public void run()
     {
         running = true;
-        while((robot.liftMotor.getCurrentPosition() < height && robot.liftMotor.getCurrentPosition() > height - tolerance) || !exit)
+        while((robot.liftMotor.getCurrentPosition() < height && robot.liftMotor.getCurrentPosition() > height - TOLERANCE) || !exit)
         {
-            if (robot.liftMotor.getCurrentPosition() < height - tolerance)
+            if (robot.liftMotor.getCurrentPosition() < height - TOLERANCE)
                 robot.liftMotor.setPower(1);
             else if (robot.liftMotor.getCurrentPosition() > height)
                 robot.liftMotor.setPower(-1);
