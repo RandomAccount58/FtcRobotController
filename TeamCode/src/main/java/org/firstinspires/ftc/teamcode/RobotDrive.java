@@ -20,6 +20,10 @@ public class RobotDrive {
 
     Telemetry telemetry = null;
     allianceColor teamColor = null;
+    //set levels for the bottom, mid, and high tower
+    public final int levels[] = {-500,-1800,-3400};
+    public MultiThread autoLevel = new MultiThread("Auto Height", this );
+
 
     //Hardware
     private DcMotorEx leftFront, leftRear, rightFront, rightRear;
@@ -34,10 +38,13 @@ public class RobotDrive {
     public DcMotorEx duckMotor;
     public Servo Grabber; //servo that grabs onto the blocks
     public Servo dropArm;
-//    public DcMotorEx flyWheel;
-//    public DcMotorEx wobbleArm;
-//    public Servo wobbleClaw;
-//    public DigitalChannel armTrigger;
+
+    //setup the servos for pod raising
+    public Servo leftPod;
+    public Servo rightPod;
+    public Servo frontPod;
+    public Servo[] podServos = new Servo[3];
+
 
     //Default motor power levels for wheels
     public double motorPower = 1;
@@ -48,6 +55,7 @@ public class RobotDrive {
     enum allianceColor {
         red, blue
     }
+
 
     //Assigning software objects to hardware, receives hardwareMap and telemetry objects from the op mode which calls it
     void initializeRobot(HardwareMap hardwareMap, Telemetry telem, allianceColor clr) {
@@ -70,6 +78,15 @@ public class RobotDrive {
         dropArm = hardwareMap.servo.get("drop_arm");
         Grabber = (Servo)hardwareMap.servo.get("block_claw");
 
+        //Initalize the servos for Odometry Pod Lift
+        leftPod = hardwareMap.servo.get("left_pod_servo");
+        rightPod = hardwareMap.servo.get("right_pod_servo");
+        frontPod = hardwareMap.servo.get("front_pod_servo");
+        podServos[0] = leftPod;
+        podServos[1] = rightPod;
+        podServos[2] = frontPod;
+
+
         //Sensor Initialization
         if (colorSensor instanceof SwitchableLight) {
             ((SwitchableLight) colorSensor).enableLight(false);
@@ -83,7 +100,6 @@ public class RobotDrive {
 
         //Initalize the accessory devices
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
 
         //Initialize IMU
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -111,13 +127,41 @@ public class RobotDrive {
         rightRear.setPower(backRightSpeed);
     }
 
-    void initLift()
-    {
+    //moves the lift down until the distance sensor detects that it is at the bottom and reset the motor endoder so it is correct
+    void initLift() {
         while (dist.getDistance(DistanceUnit.INCH) > 2) {
             liftMotor.setPower(-1);
         }
         liftMotor.setPower(0);
         liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    void nextLevel(int targetHeight) {
+        autoLevel.terminate();
+        autoLevel.changeLevel(targetHeight);
+        autoLevel.start();
+    }
+
+    //cancel any auto Level
+    void moveLiftManual(float leftTrigger,float rightTrigger) {
+        //check to see if they are pressing on the triggers and cancel the auto level
+        if(leftTrigger > 0.05 || rightTrigger > 0.05) {
+            autoLevel.terminate();
+        }
+
+        //move the lift with the desired player input if they are too close to the limits dont move
+            if (liftMotor.getCurrentPosition() <= -4400)
+                liftMotor.setPower(rightTrigger);
+            else if (dist.getDistance(DistanceUnit.INCH) <= 2)
+                liftMotor.setPower(-leftTrigger);
+            else if ((!(liftMotor.getCurrentPosition() <= -4400) || (dist.getDistance(DistanceUnit.INCH) <= 2)))
+                liftMotor.setPower(rightTrigger - leftTrigger);
+    }
+
+    void liftOdoPods() {
+        for (Servo pod:podServos) {
+            pod.setPosition(1);
+        }
     }
 }

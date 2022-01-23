@@ -10,12 +10,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 @TeleOp(name = "TestOp")
 public class TeleOpTest extends LinearOpMode{
     private boolean buttonPressed;
-    private boolean setLevel = false;
     private int lvl;
     private boolean lvlWait = false;
     private int liftTolerance = 100;
     RobotDrive robot = new RobotDrive();
-    private int levels[] = {-500,-1800,-3400};
+
+
+
 
     public void runOpMode()
     {
@@ -47,17 +48,15 @@ public class TeleOpTest extends LinearOpMode{
                 lvlWait = true;
             else if(gamepad2.left_bumper && lvl < 2 && lvlWait) {
                 lvlWait = false;
-                setLevel = true;
-                lvl++;
+                robot.nextLevel(robot.levels[++lvl]);
             }else if(gamepad2.right_bumper && lvl > 0 && lvlWait) {
                 lvlWait = false;
-                setLevel = true;
-                lvl--;
+                robot.nextLevel(robot.levels[--lvl]);
             }
 
 
             //set the led lights for each level
-            if(setLevel)
+            if(robot.autoLevel.running)
             {
                 if(lvl == 0)
                     robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
@@ -66,7 +65,7 @@ public class TeleOpTest extends LinearOpMode{
                 if(lvl == 2)
                     robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
             }
-            if(!setLevel)
+            if(!robot.autoLevel.running)
             {
                 if(robot.teamColor == RobotDrive.allianceColor.blue)
                     robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
@@ -74,30 +73,10 @@ public class TeleOpTest extends LinearOpMode{
                     robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
             }
 
-            //when a trigger is pressed cancel auto lvl
-            if(gamepad2.left_trigger >=0.1 || gamepad2.right_trigger >= 0.1)
-                setLevel = false;
-
             //up is left trigger aka moving the motor in the negative direction
-            //set the power and direction of lift motor by subtracting the two values also check to see if robot is at top or bottom
-            if (robot.liftMotor.getCurrentPosition() <= -4400 && !setLevel) {
-                robot.liftMotor.setPower(gamepad2.right_trigger);
-            } else if (robot.dist.getDistance(DistanceUnit.INCH) <= 2 && !setLevel) {
-                robot.liftMotor.setPower(-gamepad2.left_trigger);
+            //call the moveLiftManual function in RobotDrive
+            robot.moveLiftManual(gamepad2.left_trigger,gamepad2.right_trigger);
 
-            } else if ((!(robot.liftMotor.getCurrentPosition() <= -4400) || (robot.dist.getDistance(DistanceUnit.INCH) <= 2)) && !setLevel){
-                robot.liftMotor.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
-            }
-
-            //check if its at the right level and stop if it is
-//            if(setLevel) {
-//                if (robot.liftMotor.getCurrentPosition() < levels[lvl] && robot.liftMotor.getCurrentPosition() > levels[lvl] - liftTolerance)
-//                    robot.liftMotor.setPower(0);
-//                else if (robot.liftMotor.getCurrentPosition() < levels[lvl] - liftTolerance)
-//                    robot.liftMotor.setPower(1);
-//                else if (robot.liftMotor.getCurrentPosition() > levels[lvl])
-//                    robot.liftMotor.setPower(-1);
-//            }
 
 
         //if the robot arm is at the base position reset arm encoder to ensure accuracy
@@ -132,7 +111,7 @@ public class TeleOpTest extends LinearOpMode{
 
 
 
-        telemetry.addData("Lift yn ",setLevel);
+        telemetry.addData("Lift yn ",robot.autoLevel.running);
         telemetry.addData("liftLvl: ", lvl);
         telemetry.addData("LiftEncoder",robot.liftMotor.getCurrentPosition());
         telemetry.addData("Distance: ","%.3f",((DistanceSensor) robot.dist).getDistance(DistanceUnit.INCH));
