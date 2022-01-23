@@ -164,4 +164,13 @@ public class RobotDrive {
             pod.setPosition(1);
         }
     }
+
+    void turnOnLights()
+    {
+        if(teamColor == allianceColor.blue)
+            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
+        else
+            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
+
+    }
 }

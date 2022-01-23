@@ -23,6 +23,11 @@ public class RedAlianceFar extends LinearOpMode {
         //create an object to detect the Team shipping element
         OpenCV detector = new OpenCV(telemetry);
 
+        //create a RobotDrive Object and initalize it
+        RobotDrive robot = new RobotDrive();
+        robot.initializeRobot(hardwareMap,telemetry, RobotDrive.allianceColor.red);
+
+
         webcam.setPipeline(detector);
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -34,6 +39,7 @@ public class RedAlianceFar extends LinearOpMode {
 
             }
         });
+
         waitForStart();
 
         switch (detector.getLocation())
@@ -49,10 +55,12 @@ public class RedAlianceFar extends LinearOpMode {
                 break;
 
         }
+        
         while (opModeIsActive())
         {
+            robot.turnOnLights();
 
-
+            robot.nextLevel(robot.levels[barcode]);
         }
 
 
