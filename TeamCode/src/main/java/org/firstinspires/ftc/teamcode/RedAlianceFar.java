@@ -13,6 +13,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 @Autonomous(name = "RedAlianceFar",group = "Auto")
 public class RedAlianceFar extends LinearOpMode {
     OpenCvCamera webcam;
+    int barcode;
     @Override
     public void runOpMode() throws InterruptedException {
         //initalizing the webcam for OPENCV
@@ -38,10 +39,13 @@ public class RedAlianceFar extends LinearOpMode {
         switch (detector.getLocation())
         {
             case LEFT:
+                barcode = 2;
                 break;
             case RIGHT:
+                barcode= 0;
                 break;
             case MIDDLE:
+                barcode = 1;
                 break;
 
         }
