@@ -18,24 +18,24 @@ public class OpenCV extends OpenCvPipeline {
         LEFT,
         RIGHT,
         MIDDLE,
-        UNKNOWN
+        NOTFOUND
     }
-    private Location location;
+    private Location location = Location.NOTFOUND;
 
     // regions of interest (needs changes prob)
     static final Rect LEFTREGION = new Rect(
-            new Point(0, 35),
-            new Point(106, 75));
+            new Point(1, 1),
+            new Point(256, 360)); //256, 360
 
     static final Rect MIDREGION = new Rect(
-            new Point(107, 35),
-            new Point(213, 75));
+            new Point(512, 1), //552, 1
+            new Point(768, 360)); //828, 360
 
     static final Rect RIGHTREGION = new Rect(
-            new Point(213, 35),
-            new Point(320, 75));
+            new Point(1024, 1), //1104, 1
+            new Point(1279, 360)); //1379, 360
 
-    static double PICTURESHOLD = .4; //TODO might want to change
+    static double PICTURESHOLD = .2; //TODO might want to change
 
     public OpenCV (Telemetry t) { telemetry = t;}
 
@@ -45,8 +45,8 @@ public class OpenCV extends OpenCvPipeline {
 
         // yellow scale
 
-        Scalar low_ylw = new Scalar(30, 216, 127); //orange low hsv(33, 85%, 50%)
-        Scalar high_ylw = new Scalar(36, 255, 255); //orange high hsv(36, 100%, 100%)
+        Scalar low_ylw = new Scalar(10, 100, 20); //orange low hsv(17, 62%, 51%) rgb 255,136,0
+        Scalar high_ylw = new Scalar(25, 255, 255); //orange high hsv(36, 100%, 100%)
         Core.inRange(mat, low_ylw, high_ylw, mat); //create a mask of anything considered "Orange"
 
         // region
@@ -85,7 +85,11 @@ public class OpenCV extends OpenCvPipeline {
         } else if(tseRight) {
             location = Location.RIGHT;
             telemetry.addData("capstone location", "right");
+        } else{
+            location = Location.NOTFOUND;
+            telemetry.addData("capstone location", "not found");
         }
+
         telemetry.update();
 
         // bestow knowledge

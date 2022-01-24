@@ -21,7 +21,7 @@ public class RobotDrive {
     Telemetry telemetry = null;
     allianceColor teamColor = null;
     //set levels for the bottom, mid, and high tower
-    public final int levels[] = {-500,-1800,-3400};
+    public final int levels[] = {500,1800,3400};
     public MultiThread autoLevel = new MultiThread("Auto Height", this );
 
 
@@ -151,12 +151,14 @@ public class RobotDrive {
         }
 
         //move the lift with the desired player input if they are too close to the limits dont move
-            if (liftMotor.getCurrentPosition() <= -4400)
-                liftMotor.setPower(rightTrigger);
-            else if (dist.getDistance(DistanceUnit.INCH) <= 2)
+        if(!autoLevel.running) {
+            if (liftMotor.getCurrentPosition() >= 4400)
                 liftMotor.setPower(-leftTrigger);
-            else if ((!(liftMotor.getCurrentPosition() <= -4400) || (dist.getDistance(DistanceUnit.INCH) <= 2)))
+            else if (dist.getDistance(DistanceUnit.INCH) <= 2)
+                liftMotor.setPower(rightTrigger);
+            else if ((!(liftMotor.getCurrentPosition() >= 4400) || (dist.getDistance(DistanceUnit.INCH) <= 2)))
                 liftMotor.setPower(rightTrigger - leftTrigger);
+        }
     }
 
     void liftOdoPods() {
@@ -172,5 +174,10 @@ public class RobotDrive {
         else
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
 
+    }
+
+    void emergencyStop()
+    {
+        autoLevel.terminate();
     }
 }

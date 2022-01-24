@@ -7,7 +7,6 @@ public class MultiThread implements Runnable{
     private int height;
     private final int TOLERANCE = 50;
     private RobotDrive robot;
-    private boolean exit = false;
     public boolean running = false;
 
     public MultiThread(String name,RobotDrive r)
@@ -18,12 +17,12 @@ public class MultiThread implements Runnable{
     public void run()
     {
         running = true;
-        while((robot.liftMotor.getCurrentPosition() < height && robot.liftMotor.getCurrentPosition() > height - TOLERANCE) || !exit)
+        while(robot.liftMotor.getCurrentPosition() < height || robot.liftMotor.getCurrentPosition() > height + TOLERANCE)
         {
-            if (robot.liftMotor.getCurrentPosition() < height - TOLERANCE)
-                robot.liftMotor.setPower(1);
-            else if (robot.liftMotor.getCurrentPosition() > height)
-                robot.liftMotor.setPower(-1);
+            if (robot.liftMotor.getCurrentPosition() > height + TOLERANCE)
+                robot.liftMotor.setPower(-1); //down
+            else if (robot.liftMotor.getCurrentPosition() < height)
+                robot.liftMotor.setPower(1); //up
         }
         robot.liftMotor.setPower(0);
         running = false;
@@ -31,13 +30,14 @@ public class MultiThread implements Runnable{
 
     public void start()
     {
-        if (t == null) {
             t = new Thread (this, threadName);
             t.start ();
-        }
     }
 
-    public void terminate() { exit = true; }
+    public void terminate() {
+        if (t != null)
+            t.interrupt();
+    }
 
     public void changeLevel(int h) { height = h; }
 }

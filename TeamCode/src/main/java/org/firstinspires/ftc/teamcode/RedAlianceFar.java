@@ -32,7 +32,7 @@ public class RedAlianceFar extends LinearOpMode {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
             }
             @Override
             public void onError(int errorCode) {
@@ -42,25 +42,41 @@ public class RedAlianceFar extends LinearOpMode {
 
         waitForStart();
 
-        switch (detector.getLocation())
-        {
-            case LEFT:
-                barcode = 2;
-                break;
-            case RIGHT:
-                barcode= 0;
-                break;
-            case MIDDLE:
-                barcode = 1;
-                break;
+        Thread.sleep(1000);
 
-        }
+
+        //robot.nextLevel(robot.levels[barcode]);
         
         while (opModeIsActive())
         {
+            switch (detector.getLocation())
+            {
+                case LEFT:
+                    barcode = 2;
+                    break;
+                case RIGHT:
+                    barcode= 0;
+                    break;
+                case MIDDLE:
+                    barcode = 1;
+                    break;
+                default:
+                    barcode = -1;
+                    break;
+            }
+
             robot.turnOnLights();
 
-            robot.nextLevel(robot.levels[barcode]);
+
+            if(barcode > -1)
+                robot.nextLevel(robot.levels[barcode]);
+
+            sleep(10000);
+
+            telemetry.addData("Detected Level: ",barcode);
+            telemetry.update();
+
+
         }
 
 
