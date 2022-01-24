@@ -22,7 +22,6 @@ public class TeleOpTest extends LinearOpMode{
     {
         waitForStart();
         robot.initializeRobot(hardwareMap, telemetry, RobotDrive.allianceColor.blue);
-        robot.liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //set led colors based on what alliance you are on

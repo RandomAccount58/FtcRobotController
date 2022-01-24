@@ -1,9 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -40,44 +45,59 @@ public class RedAlianceFar extends LinearOpMode {
             }
         });
 
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        TrajectorySequence mainDrive = drive.trajectorySequenceBuilder(new Pose2d(10, -70 + 15/2, Math.toRadians(90)))
+                .forward(15/2)
+                .turn(Math.toRadians(90))
+                .strafeTo(new Vector2d(10,-24))
+                .addDisplacementMarker(() -> {
+                    robot.Grabber.setPosition(1);
+                })
+                .waitSeconds(0.5)
+                .strafeTo(new Vector2d(5,-8))
+                .forward(20)
+                .splineTo(new Vector2d(-43,-20),Math.toRadians(90))
+                .back(1)
+                .splineTo(new Vector2d(-55,-55),Math.toRadians(-90))
+                .addDisplacementMarker(() -> {
+                    robot.duckMotor.setPower(1);
+                })
+                .waitSeconds(3)
+                .addDisplacementMarker(() -> {
+                    robot.duckMotor.setPower(0);
+                })
+                .forward(1)
+                .splineTo(new Vector2d(-24,-8),Math.toRadians(0))
+                .splineTo(new Vector2d(10,-8),Math.toRadians(0))
+                .strafeTo(new Vector2d(10,-40))
+                .build();
+
         waitForStart();
-
-        Thread.sleep(1000);
-
-
-        //robot.nextLevel(robot.levels[barcode]);
         
-        while (opModeIsActive())
+        switch (detector.getLocation())
         {
-            switch (detector.getLocation())
-            {
-                case LEFT:
-                    barcode = 2;
-                    break;
-                case RIGHT:
-                    barcode= 0;
-                    break;
-                case MIDDLE:
-                    barcode = 1;
-                    break;
-                default:
-                    barcode = -1;
-                    break;
-            }
-
-            robot.turnOnLights();
-
-
-            if(barcode > -1)
-                robot.nextLevel(robot.levels[barcode]);
-
-            sleep(10000);
-
-            telemetry.addData("Detected Level: ",barcode);
-            telemetry.update();
-
-
+            case LEFT:
+                barcode = 2;
+                break;
+            case RIGHT:
+                barcode= 0;
+                break;
+            case MIDDLE:
+                barcode = 1;
+                break;
+            default:
+                barcode = -1;
+                break;
         }
+
+        telemetry.addData("Detected Level: ",barcode);
+        telemetry.update();
+        robot.turnOnLights();
+        if(barcode > -1)
+            robot.nextLevel(robot.levels[barcode]);
+
+        drive.followTrajectorySequence(mainDrive);
+
 
 
     }
