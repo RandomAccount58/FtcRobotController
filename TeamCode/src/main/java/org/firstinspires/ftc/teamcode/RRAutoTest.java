@@ -15,8 +15,9 @@ package org.firstinspires.ftc.teamcode;
         import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous(name = "RRTesting")
+@Disabled
 public class RRAutoTest extends LinearOpMode{
-    @Disabled
+
     public void runOpMode()
     {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
