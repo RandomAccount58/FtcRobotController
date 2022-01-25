@@ -14,27 +14,28 @@ public class MeepMeepVisualization {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(10, -70 + 15/2, Math.toRadians(90)))
+                        drive.trajectorySequenceBuilder(new Pose2d(10, 70 - 15/2, Math.toRadians(-90)))
                                 .forward(15/2)
-                                .turn(Math.toRadians(90))
-                                .strafeTo(new Vector2d(10,-24))
+                                .turn(Math.toRadians(-90))
+                                .strafeTo(new Vector2d(10,24))
                                 .addDisplacementMarker(() -> {
                                     //claw move and drop block
                                 })
                                 .waitSeconds(0.5)
-                                .strafeTo(new Vector2d(5,-8))
+                                .strafeTo(new Vector2d(5,8))
                                 .forward(20)
-                                .splineTo(new Vector2d(-43,-20),Math.toRadians(90))
-                                .back(1)
-                                .splineTo(new Vector2d(-55,-55),Math.toRadians(-90))
+                                .splineTo(new Vector2d(-45,20),Math.toRadians(0))
+                                .back(11)
+                                .strafeTo(new Vector2d(-55,55))
                                 .addDisplacementMarker(() -> {
                                     // add duckwheel moving
                                 })
                                 .waitSeconds(3)
                                 .forward(1)
-                                .splineTo(new Vector2d(-24,-8),Math.toRadians(0))
-                                .splineTo(new Vector2d(10,-8),Math.toRadians(0))
-                                .strafeTo(new Vector2d(10,-40))
+                                .strafeTo(new Vector2d(-55,20))
+                                .splineTo(new Vector2d(10,8),Math.toRadians(0))
+                                .strafeTo(new Vector2d(10,40))
+                                .turn(Math.toRadians(-90))
                                 //temporary just do motorpower full for like half a sec
                                 .waitSeconds(2)
                                 .forward(140)
