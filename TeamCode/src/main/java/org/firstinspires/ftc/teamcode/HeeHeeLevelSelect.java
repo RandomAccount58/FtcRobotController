@@ -42,30 +42,33 @@ public class HeeHeeLevelSelect extends LinearOpMode {
 
             }
         });
-
+        robot.turnOnLights();
         waitForStart();
+        while (opModeIsActive()) {
+            switch (detector.getLocation()) {
+                case LEFT:
+                    barcode = 2;
+                    break;
+                case RIGHT:
+                    barcode = 0;
+                    break;
+                case MIDDLE:
+                    barcode = 1;
+                    break;
+                default:
+                    barcode = -1;
+                    break;
+            }
 
-        switch (detector.getLocation()) {
-            case LEFT:
-                barcode = 2;
-                break;
-            case RIGHT:
-                barcode = 0;
-                break;
-            case MIDDLE:
-                barcode = 1;
-                break;
-            default:
-                barcode = -1;
-                break;
+            if (barcode > -1)
+                robot.nextLevel(robot.levels[barcode]);
+            Thread.sleep(2000);
         }
-
         webcam.stopStreaming();
 
         telemetry.addData("Detected Level: ", barcode);
         telemetry.update();
-        robot.turnOnLights();
-        if (barcode > -1)
-            robot.nextLevel(robot.levels[barcode]);
+
+
     }
 }
