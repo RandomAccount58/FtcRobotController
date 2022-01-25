@@ -99,8 +99,10 @@ public class RedAlianceFar extends LinearOpMode {
             robot.nextLevel(robot.levels[barcode]);
 
         drive.followTrajectorySequence(mainDrive);
-
-
+        robot.liftOdoPods();
+        robot.mixDrive(1,0,0);
+        Thread.sleep(400);
+        robot.mixDrive(0,0,0);
 
     }
 }
