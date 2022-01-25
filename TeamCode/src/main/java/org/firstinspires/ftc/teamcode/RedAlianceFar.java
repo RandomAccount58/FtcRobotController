@@ -73,7 +73,7 @@ public class RedAlianceFar extends LinearOpMode {
                 .build();
 
         waitForStart();
-        
+
         switch (detector.getLocation())
         {
             case LEFT:
@@ -89,6 +89,8 @@ public class RedAlianceFar extends LinearOpMode {
                 barcode = -1;
                 break;
         }
+
+        webcam.stopStreaming();
 
         telemetry.addData("Detected Level: ",barcode);
         telemetry.update();
