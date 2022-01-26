@@ -43,8 +43,23 @@ public class RedAlianceNear extends LinearOpMode {
         });
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        TrajectorySequence mainDrive = drive.trajectorySequenceBuilder(new Pose2d(10, -70 + 15/2, Math.toRadians(90)))
-                //create a path for Nearside Red aliance
+        TrajectorySequence mainDrive = drive.trajectorySequenceBuilder(new Pose2d(-36, -70 + 15/2, Math.toRadians(90)))
+                .forward(15/2)
+                .turn(Math.toRadians(-90))
+                .strafeTo(new Vector2d(-36,-23))
+                .forward(barcode*2)
+                .addDisplacementMarker(() -> {
+                    robot.Grabber.setPosition(0.75);
+                })
+                .waitSeconds(0.5)
+                .back(1)
+                .splineTo(new Vector2d(-55,-55),Math.toRadians(-90))
+                .addDisplacementMarker(() -> {
+                    robot.duckMotor.setPower(0.75);
+                })
+                .waitSeconds(3)
+                .forward(1)
+                .splineTo(new Vector2d(-60,-36),Math.toRadians(90))
                 .build();
 
         waitForStart();
@@ -75,9 +90,6 @@ public class RedAlianceNear extends LinearOpMode {
 
         drive.followTrajectorySequence(mainDrive);
         robot.liftOdoPods();
-        robot.mixDrive(1,0,0);
-        Thread.sleep(400);
-        robot.mixDrive(0,0,0);
 
     }
 }
