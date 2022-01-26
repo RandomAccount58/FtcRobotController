@@ -72,6 +72,8 @@ public class RedAlianceFar extends LinearOpMode {
                 .strafeTo(new Vector2d(10,-40))
                 .build();
 
+        robot.turnOnLights();
+
         waitForStart();
 
         switch (detector.getLocation())

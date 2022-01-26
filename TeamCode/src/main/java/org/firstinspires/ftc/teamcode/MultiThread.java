@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+
 //Start of multithreading
 public class MultiThread implements Runnable{
     private Thread t;
@@ -16,6 +18,13 @@ public class MultiThread implements Runnable{
     }
     public void run()
     {
+        if(height==robot.levels[0])
+            robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+        else if(height == robot.levels[1])
+            robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.ORANGE);
+        else if(height == robot.levels[2])
+            robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
+
         running = true;
         while(robot.liftMotor.getCurrentPosition() < height || robot.liftMotor.getCurrentPosition() > height + TOLERANCE)
         {
@@ -25,6 +34,7 @@ public class MultiThread implements Runnable{
                 robot.liftMotor.setPower(1); //up
         }
         robot.liftMotor.setPower(0);
+        robot.turnOnLights();
         running = false;
     }
 

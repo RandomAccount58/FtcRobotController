@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -12,8 +11,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "BlueAlianceFar",group = "Auto")
-public class BlueAlianceFar extends LinearOpMode {
+public class BlueAlianceNear extends LinearOpMode {
     OpenCvCamera webcam;
     int barcode;
     @Override
@@ -43,32 +41,8 @@ public class BlueAlianceFar extends LinearOpMode {
         });
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        TrajectorySequence mainDrive = drive.trajectorySequenceBuilder(new Pose2d(10, 70 - 15/2, Math.toRadians(-90)))
-                .forward(15/2)
-                .turn(Math.toRadians(-90))
-                .strafeTo(new Vector2d(10,24))
-                .forward(barcode * 1)
-                .addDisplacementMarker(() -> {
-                    robot.Grabber.setPosition(1);
-                })
-                .waitSeconds(0.5)
-                .strafeTo(new Vector2d(5,8))
-                .forward(20)
-                .splineTo(new Vector2d(-45,20),Math.toRadians(90))
-                .back(11)
-                .strafeTo(new Vector2d(-55,55))
-                .addDisplacementMarker(() -> {
-                    robot.duckMotor.setPower(1);
-                })
-                .waitSeconds(3)
-                .addDisplacementMarker(() -> {
-                    robot.duckMotor.setPower(0);
-                })
-                .forward(1)
-                .splineTo(new Vector2d(-55,20),Math.toRadians(0))
-                .strafeTo(new Vector2d(10,8))
-                .strafeTo(new Vector2d(10,40))
-                .turn(Math.toRadians(-90))
+        TrajectorySequence mainDrive = drive.trajectorySequenceBuilder(new Pose2d(10, -70 + 15/2, Math.toRadians(90)))
+                //create a path for Nearside Blue aliance
                 .build();
 
         robot.turnOnLights();
