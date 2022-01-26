@@ -75,6 +75,8 @@ public class BlueAlianceFar extends LinearOpMode {
 
         waitForStart();
 
+        robot.dropArm.setPosition(1);
+
         switch (detector.getLocation())
         {
             case LEFT:

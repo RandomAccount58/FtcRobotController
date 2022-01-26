@@ -64,6 +64,8 @@ public class BlueAlianceNear extends LinearOpMode {
 
         waitForStart();
 
+        robot.dropArm.setPosition(1);
+
         switch (detector.getLocation())
         {
             case LEFT:
