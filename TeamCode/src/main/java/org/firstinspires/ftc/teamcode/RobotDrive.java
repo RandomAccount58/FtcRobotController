@@ -82,6 +82,11 @@ public class RobotDrive {
         leftPod = hardwareMap.servo.get("left_pod_servo");
         rightPod = hardwareMap.servo.get("right_pod_servo");
         frontPod = hardwareMap.servo.get("front_pod_servo");
+
+        //reversing the needed servos
+        rightPod.setDirection(Servo.Direction.REVERSE);
+        frontPod.setDirection(Servo.Direction.REVERSE);
+
         podServos[0] = leftPod;
         podServos[1] = rightPod;
         podServos[2] = frontPod;

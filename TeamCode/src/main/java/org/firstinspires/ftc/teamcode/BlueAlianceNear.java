@@ -71,10 +71,10 @@ public class BlueAlianceNear extends LinearOpMode {
         switch (detector.getLocation())
         {
             case LEFT:
-                barcode = 2;
+                barcode = 0;
                 break;
             case RIGHT:
-                barcode= 0;
+                barcode= 2;
                 break;
             case MIDDLE:
                 barcode = 1;

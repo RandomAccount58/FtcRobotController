@@ -47,10 +47,10 @@ public class RedAlianceNear extends LinearOpMode {
         while(barcode == -1) {
             switch (detector.getLocation()) {
                 case LEFT:
-                    barcode = 2;
+                    barcode = 0;
                     break;
                 case RIGHT:
-                    barcode = 0;
+                    barcode = 2;
                     break;
                 case MIDDLE:
                     barcode = 1;
@@ -67,7 +67,7 @@ public class RedAlianceNear extends LinearOpMode {
         TrajectorySequence mainDrive = drive.trajectorySequenceBuilder(startPose)
                 .forward(15/2)
                 .turn(Math.toRadians(-90))
-                .strafeTo(new Vector2d(-36,-23))
+                .strafeTo(new Vector2d(-36,-20))
                 .forward(barcode*2)
                 .build();
 
