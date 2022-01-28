@@ -30,8 +30,7 @@ public class TeleOpTest extends LinearOpMode{
         else
             robot.lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
 
-        //drop the arm uppon initalization dont got to do it here just testing do it in auto
-        robot.dropArm.setPosition(1);
+
 
         while (opModeIsActive()) {
 
@@ -41,6 +40,14 @@ public class TeleOpTest extends LinearOpMode{
             double rotate = gamepad1.right_stick_x * robot.motorPower;
 
             robot.mixDrive(forward, strafe, rotate);
+
+            if(gamepad1.dpad_up){
+                robot.teamColor = RobotDrive.allianceColor.blue;
+                robot.turnOnLights();
+            } else if(gamepad1.dpad_up) {
+                robot.teamColor = RobotDrive.allianceColor.red;
+                robot.turnOnLights();
+            }
 
             //change the auto level to a diffrent one and check if it has being held down right is up left is down
             if(!gamepad2.left_bumper && !gamepad2.right_bumper)

@@ -42,24 +42,43 @@ public class BlueAlianceNear extends LinearOpMode {
             }
         });
 
+        Thread.sleep(5000);
+
+        while(barcode == -1) {
+            switch (detector.getLocation()) {
+                case LEFT:
+                    barcode = 0;
+                    break;
+                case RIGHT:
+                    barcode = 2;
+                    break;
+                case MIDDLE:
+                    barcode = 1;
+                    break;
+                default:
+                    barcode = -1;
+                    break;
+            }
+        }
+
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        TrajectorySequence mainDrive = drive.trajectorySequenceBuilder(new Pose2d(-36, 70 - 15/2, Math.toRadians(-90)))
+        Pose2d startPose = new Pose2d(-36, 70 - 15 / 2, Math.toRadians(-90));
+
+        TrajectorySequence mainDrive = drive.trajectorySequenceBuilder(startPose)
                 .forward(15/2)
                 .turn(Math.toRadians(90))
                 .strafeTo(new Vector2d(-36,23))
-                .forward(2*2)
-                .addDisplacementMarker(() -> {
-                    //claw move and drop block
-                })
-                .waitSeconds(0.5)
-                .back(1)
-                .strafeTo(new Vector2d(-55,55))
-                .addDisplacementMarker(() -> {
-                    // add duckwheel moving
-                })
-                .waitSeconds(3)
+                .forward(barcode*2)
+                .build();
+
+        TrajectorySequence secondDrive = drive.trajectorySequenceBuilder(startPose)
+                .back(barcode * 2)
+                .strafeTo(new Vector2d(-70 + 15/2 + 2,55 - 15/2 -2))
+                .build();
+
+        TrajectorySequence thirdDrive = drive.trajectorySequenceBuilder(startPose)
                 .forward(1)
-                .splineTo(new Vector2d(-60,36),Math.toRadians(-90))
+                .strafeTo(new Vector2d(-60,36))
                 .build();
 
         robot.turnOnLights();
@@ -68,32 +87,30 @@ public class BlueAlianceNear extends LinearOpMode {
 
         robot.dropArm.setPosition(1);
 
-        switch (detector.getLocation())
-        {
-            case LEFT:
-                barcode = 0;
-                break;
-            case RIGHT:
-                barcode= 2;
-                break;
-            case MIDDLE:
-                barcode = 1;
-                break;
-            default:
-                barcode = -1;
-                break;
-        }
-
         webcam.stopStreaming();
 
-        telemetry.addData("Detected Level: ",barcode);
-        telemetry.update();
-        robot.turnOnLights();
-        if(barcode > -1)
-            robot.nextLevel(robot.levels[barcode]);
+        while(opModeIsActive()) {
+            robot.dropArm.setPosition(1);
 
-        drive.followTrajectorySequence(mainDrive);
-        robot.liftOdoPods();
+            webcam.stopStreaming();
+
+            telemetry.addData("Detected Level: ", barcode);
+            telemetry.update();
+            robot.turnOnLights();
+            if (barcode > -1)
+                robot.nextLevel(robot.levels[barcode]);
+
+            drive.followTrajectorySequence(mainDrive);
+            robot.Grabber.setPosition(-1);
+            Thread.sleep(500);
+            drive.followTrajectorySequence(secondDrive);
+            robot.duckMotor.setPower(0.75);
+            Thread.sleep(200);
+            robot.duckMotor.setPower(0);
+            drive.followTrajectorySequence(thirdDrive);
+            robot.liftOdoPods();
+            requestOpModeStop();
+        }
 
     }
 }
