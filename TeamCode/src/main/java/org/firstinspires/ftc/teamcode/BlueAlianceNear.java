@@ -73,10 +73,10 @@ public class BlueAlianceNear extends LinearOpMode {
 
         TrajectorySequence secondDrive = drive.trajectorySequenceBuilder(new Pose2d(-36+6,23,Math.toRadians(0)))
                 .back(6)
-                .strafeTo(new Vector2d(-70 + 15/2 + 6,70 - 15/2 -6))
+                .strafeTo(new Vector2d(-70 + 15/2 + 5,70 - 15/2 -5))
                 .build();
 
-        TrajectorySequence thirdDrive = drive.trajectorySequenceBuilder(new Pose2d(-70 + 15/2 + 6,70 - 15/2 -6,Math.toRadians(0)))
+        TrajectorySequence thirdDrive = drive.trajectorySequenceBuilder(new Pose2d(-70 + 15/2 + 5,70 - 15/2 - 5,Math.toRadians(0)))
                 .forward(1)
                 .strafeTo(new Vector2d(-60,36))
                 .build();

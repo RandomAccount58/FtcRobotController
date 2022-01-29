@@ -68,15 +68,15 @@ public class RedAlianceNear extends LinearOpMode {
                 .forward(15/2)
                 .turn(Math.toRadians(-90))
                 .strafeTo(new Vector2d(-36,-20))
-                .forward(4)
+                .forward(8)
                 .build();
 
-        TrajectorySequence secondDrive = drive.trajectorySequenceBuilder(startPose)
-                .back(4)
-                .splineTo(new Vector2d(-70 +15/2 + 2,-70 +15/2 + 2),Math.toRadians(-90))
+        TrajectorySequence secondDrive = drive.trajectorySequenceBuilder(new Pose2d(-36+8,-20,Math.toRadians(0)))
+                .back(8)
+                .splineTo(new Vector2d(-70 + 15/2 + 6,-70 + 15/2 + 6),Math.toRadians(-90))
                 .build();
 
-        TrajectorySequence thirdDrive = drive.trajectorySequenceBuilder(startPose)
+        TrajectorySequence thirdDrive = drive.trajectorySequenceBuilder(new Pose2d(-70 +15/2 + 6,-70 +15/2 + 6, Math.toRadians(-90)))
                 .forward(1)
                 .splineTo(new Vector2d(-60,-36),Math.toRadians(90))
                 .build();
@@ -100,7 +100,7 @@ public class RedAlianceNear extends LinearOpMode {
             Thread.sleep(500);
             drive.followTrajectorySequence(secondDrive);
             robot.duckMotor.setPower(0.75);
-            Thread.sleep(200);
+            Thread.sleep(3000);
             robot.duckMotor.setPower(0);
             drive.followTrajectorySequence(thirdDrive);
             robot.liftOdoPods();

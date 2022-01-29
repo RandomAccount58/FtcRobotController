@@ -21,7 +21,7 @@ public class RobotDrive {
     Telemetry telemetry = null;
     allianceColor teamColor = null;
     //set levels for the bottom, mid, and high tower
-    public final int levels[] = {980,1800,3400};
+    public final int levels[] = {980,2000,3400};
     public MultiThread autoLevel = new MultiThread("Auto Height", this );
 
 
