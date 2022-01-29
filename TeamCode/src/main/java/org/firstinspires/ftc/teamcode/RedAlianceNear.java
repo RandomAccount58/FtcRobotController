@@ -16,6 +16,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 public class RedAlianceNear extends LinearOpMode {
     OpenCvCamera webcam;
     int barcode = -1;
+    int timeout = 0;
     @Override
     public void runOpMode() throws InterruptedException {
         //initalizing the webcam for OPENCV
@@ -59,6 +60,9 @@ public class RedAlianceNear extends LinearOpMode {
                     barcode = -1;
                     break;
             }
+            Thread.sleep(1);
+            if(timeout>500)
+                barcode = 2;
         }
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
