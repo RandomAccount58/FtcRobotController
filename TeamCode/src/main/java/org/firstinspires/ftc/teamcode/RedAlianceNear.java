@@ -45,25 +45,6 @@ public class RedAlianceNear extends LinearOpMode {
 
         Thread.sleep(5000);
 
-        while(barcode == -1) {
-            switch (detector.getLocation()) {
-                case LEFT:
-                    barcode = 0;
-                    break;
-                case RIGHT:
-                    barcode = 2;
-                    break;
-                case MIDDLE:
-                    barcode = 1;
-                    break;
-                default:
-                    barcode = -1;
-                    break;
-            }
-            Thread.sleep(1);
-            if(timeout>500)
-                barcode = 2;
-        }
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(-36, -70 + 15 / 2, Math.toRadians(90));
@@ -87,7 +68,6 @@ public class RedAlianceNear extends LinearOpMode {
 
         robot.turnOnLights();
 
-        robot.dropArm.setPosition(1);
 
         webcam.stopStreaming();
 
@@ -95,6 +75,20 @@ public class RedAlianceNear extends LinearOpMode {
 
         while(opModeIsActive()) {
             robot.dropArm.setPosition(1);
+
+            while(barcode == -1) {
+                switch (detector.getLocation()) {
+                    case LEFT:
+                        barcode = 0;
+                        break;
+                    case MIDDLE:
+                        barcode = 1;
+                        break;
+                    default:
+                        barcode = 2;
+                        break;
+                }
+            }
 
             webcam.stopStreaming();
 
@@ -108,7 +102,7 @@ public class RedAlianceNear extends LinearOpMode {
             robot.Grabber.setPosition(-1);
             Thread.sleep(500);
             drive.followTrajectorySequence(secondDrive);
-            robot.duckMotor.setPower(0.75);
+            robot.duckMotor.setPower(0.5);
             Thread.sleep(3000);
             robot.duckMotor.setPower(0);
             drive.followTrajectorySequence(thirdDrive);
