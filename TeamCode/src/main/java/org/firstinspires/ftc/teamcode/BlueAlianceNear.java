@@ -68,15 +68,15 @@ public class BlueAlianceNear extends LinearOpMode {
                 .forward(15/2)
                 .turn(Math.toRadians(90))
                 .strafeTo(new Vector2d(-36,23))
-                .forward(barcode*2)
+                .forward(6)
                 .build();
 
-        TrajectorySequence secondDrive = drive.trajectorySequenceBuilder(startPose)
-                .back(barcode * 2)
-                .strafeTo(new Vector2d(-70 + 15/2 + 2,55 - 15/2 -2))
+        TrajectorySequence secondDrive = drive.trajectorySequenceBuilder(new Pose2d(-36+6,23,Math.toRadians(0)))
+                .back(6)
+                .strafeTo(new Vector2d(-70 + 15/2 + 6,70 - 15/2 -6))
                 .build();
 
-        TrajectorySequence thirdDrive = drive.trajectorySequenceBuilder(startPose)
+        TrajectorySequence thirdDrive = drive.trajectorySequenceBuilder(new Pose2d(-70 + 15/2 + 6,70 - 15/2 -6,Math.toRadians(0)))
                 .forward(1)
                 .strafeTo(new Vector2d(-60,36))
                 .build();
@@ -104,8 +104,8 @@ public class BlueAlianceNear extends LinearOpMode {
             robot.Grabber.setPosition(-1);
             Thread.sleep(500);
             drive.followTrajectorySequence(secondDrive);
-            robot.duckMotor.setPower(0.75);
-            Thread.sleep(200);
+            robot.duckMotor.setPower(-0.75);
+            Thread.sleep(2000);
             robot.duckMotor.setPower(0);
             drive.followTrajectorySequence(thirdDrive);
             robot.liftOdoPods();

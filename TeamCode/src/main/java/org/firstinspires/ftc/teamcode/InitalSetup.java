@@ -14,6 +14,6 @@ public class InitalSetup extends LinearOpMode {
         robot.initLift();
         while(!gamepad1.b) {}
         robot.Grabber.setPosition(1);
-
+        while (!gamepad1.a);
     }
 }
