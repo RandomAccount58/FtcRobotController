@@ -15,7 +15,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @Autonomous(name = "BlueAlianceNear",group = "Auto")
 public class BlueAlianceNear extends LinearOpMode {
     OpenCvCamera webcam;
-    int barcode;
+    int barcode = -1;
     @Override
     public void runOpMode() throws InterruptedException {
         //initalizing the webcam for OPENCV
@@ -42,7 +42,7 @@ public class BlueAlianceNear extends LinearOpMode {
             }
         });
 
-        Thread.sleep(5000);
+        Thread.sleep(5500);
 
         while(barcode == -1) {
             switch (detector.getLocation()) {
@@ -71,23 +71,23 @@ public class BlueAlianceNear extends LinearOpMode {
                 .forward(6)
                 .build();
 
-        TrajectorySequence secondDrive = drive.trajectorySequenceBuilder(new Pose2d(-36+6,23,Math.toRadians(0)))
+        TrajectorySequence secondDrive = drive.trajectorySequenceBuilder(mainDrive.end())
                 .back(6)
                 .strafeTo(new Vector2d(-70 + 15/2 + 5,70 - 15/2 -5))
                 .build();
 
-        TrajectorySequence thirdDrive = drive.trajectorySequenceBuilder(new Pose2d(-70 + 15/2 + 5,70 - 15/2 - 5,Math.toRadians(0)))
+        TrajectorySequence thirdDrive = drive.trajectorySequenceBuilder(secondDrive.end())
                 .forward(1)
                 .strafeTo(new Vector2d(-60,36))
                 .build();
 
         robot.turnOnLights();
 
-        waitForStart();
-
         robot.dropArm.setPosition(1);
 
         webcam.stopStreaming();
+
+        waitForStart();
 
         while(opModeIsActive()) {
             robot.dropArm.setPosition(1);
@@ -111,6 +111,5 @@ public class BlueAlianceNear extends LinearOpMode {
             robot.liftOdoPods();
             requestOpModeStop();
         }
-
     }
 }

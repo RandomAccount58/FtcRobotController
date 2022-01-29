@@ -71,17 +71,22 @@ public class RedAlianceNear extends LinearOpMode {
                 .forward(8)
                 .build();
 
-        TrajectorySequence secondDrive = drive.trajectorySequenceBuilder(new Pose2d(-36+8,-20,Math.toRadians(0)))
+        TrajectorySequence secondDrive = drive.trajectorySequenceBuilder(mainDrive.end())
                 .back(8)
                 .splineTo(new Vector2d(-70 + 15/2 + 6,-70 + 15/2 + 6),Math.toRadians(-90))
                 .build();
 
-        TrajectorySequence thirdDrive = drive.trajectorySequenceBuilder(new Pose2d(-70 +15/2 + 6,-70 +15/2 + 6, Math.toRadians(-90)))
+        TrajectorySequence thirdDrive = drive.trajectorySequenceBuilder(secondDrive.end())
                 .forward(1)
                 .splineTo(new Vector2d(-60,-36),Math.toRadians(90))
                 .build();
 
         robot.turnOnLights();
+
+        robot.dropArm.setPosition(1);
+
+        webcam.stopStreaming();
+
         waitForStart();
 
         while(opModeIsActive()) {

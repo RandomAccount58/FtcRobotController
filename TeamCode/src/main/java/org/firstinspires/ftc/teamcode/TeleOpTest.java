@@ -41,6 +41,9 @@ public class TeleOpTest extends LinearOpMode{
 
             robot.mixDrive(forward, strafe, rotate);
 
+            if(gamepad1.right_stick_button)
+                robot.liftOdoPods();
+
             if(gamepad1.dpad_up){
                 robot.teamColor = RobotDrive.allianceColor.blue;
                 robot.turnOnLights();

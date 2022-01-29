@@ -67,8 +67,8 @@ public class OpenCV extends OpenCvPipeline {
         telemetry.addData("middle value", (int) Core.sumElems(right).val[0]);
         telemetry.addData("right value", (int) Core.sumElems(middle).val[0]);
         telemetry.addData("left percent", Math.round(leftV * 100) + "%");
-        telemetry.addData("middle percent", Math.round(rightV * 100) + "%");
-        telemetry.addData("right percent", Math.round(middleV * 100) + "%");
+        telemetry.addData("middle percent", Math.round(middleV * 100) + "%");
+        telemetry.addData("right percent", Math.round(rightV * 100) + "%");
 
         // where stone?
 

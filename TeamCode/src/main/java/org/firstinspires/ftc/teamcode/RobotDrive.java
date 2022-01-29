@@ -40,10 +40,9 @@ public class RobotDrive {
     public Servo dropArm;
 
     //setup the servos for pod raising
-    public Servo leftPod;
-    public Servo rightPod;
-    public Servo frontPod;
-    public Servo[] podServos = new Servo[3];
+    public CRServo leftPod;
+    public CRServo rightPod;
+    public CRServo frontPod;
 
 
     //Default motor power levels for wheels
@@ -79,17 +78,13 @@ public class RobotDrive {
         Grabber = (Servo)hardwareMap.servo.get("block_claw");
 
         //Initalize the servos for Odometry Pod Lift
-        leftPod = hardwareMap.servo.get("left_pod_servo");
-        rightPod = hardwareMap.servo.get("right_pod_servo");
-        frontPod = hardwareMap.servo.get("front_pod_servo");
+        leftPod = hardwareMap.crservo.get("left_pod_servo");
+        rightPod = hardwareMap.crservo.get("right_pod_servo");
+        frontPod = hardwareMap.crservo.get("front_pod_servo");
 
         //reversing the needed servos
-        rightPod.setDirection(Servo.Direction.REVERSE);
-        frontPod.setDirection(Servo.Direction.REVERSE);
-
-        podServos[0] = leftPod;
-        podServos[1] = rightPod;
-        podServos[2] = frontPod;
+        rightPod.setDirection(CRServo.Direction.REVERSE);
+        frontPod.setDirection(CRServo.Direction.REVERSE);
 
 
         //Sensor Initialization
@@ -167,9 +162,15 @@ public class RobotDrive {
     }
 
     void liftOdoPods() {
-        for (Servo pod:podServos) {
-            pod.setPosition(1);
-        }
+        frontPod.setPower(1);
+        leftPod.setPower(1);
+        rightPod.setPower(1);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e){}
+        leftPod.setPower(0);
+        rightPod.setPower(0);
+        frontPod.setPower(0);
     }
 
     void turnOnLights()
