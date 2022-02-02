@@ -45,6 +45,9 @@ public class BlueAlianceNear extends LinearOpMode {
 
         Thread.sleep(5500);
 
+        while(barcode == -1) {
+            barcode = detector.getLocationInt();
+        }
 
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);

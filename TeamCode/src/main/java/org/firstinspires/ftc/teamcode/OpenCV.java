@@ -23,17 +23,17 @@ public class OpenCV extends OpenCvPipeline {
     private Location location = Location.NOTFOUND;
 
     // regions of interest (needs changes prob)
-    static final Rect LEFTREGION = new Rect(
-            new Point(1, 1),
-            new Point(256, 360)); //256, 360
+//    static final Rect LEFTREGION = new Rect(
+//            new Point(1, 1),
+//            new Point(360, 1380)); //256, 360
 
     static final Rect MIDREGION = new Rect(
-            new Point(512, 1), //552, 1
-            new Point(768, 360)); //828, 360
+            new Point(1, 1), //552, 1
+            new Point(360, 1380)); //828, 360
 
     static final Rect RIGHTREGION = new Rect(
-            new Point(1024, 1), //1104, 1
-            new Point(1279, 360)); //1379, 360
+            new Point(361, 1), //1104, 1
+            new Point(720, 1380)); //1379, 360
 
     static double PICTURESHOLD = .2; //TODO might want to change
 
@@ -51,30 +51,32 @@ public class OpenCV extends OpenCvPipeline {
 
         // region
 
-        Mat left = mat.submat(LEFTREGION);
+        //Mat left = mat.submat(LEFTREGION);
         Mat right = mat.submat(RIGHTREGION);
         Mat middle = mat.submat(MIDREGION);
-        double leftV = Core.sumElems(left).val[0] /LEFTREGION.area() / 255;
+        //double leftV = Core.sumElems(left).val[0] /LEFTREGION.area() / 255;
         double rightV = Core.sumElems(right).val[0] / RIGHTREGION.area() / 255;
         double middleV = Core.sumElems(middle).val[0] / MIDREGION.area() / 255;
-        left.release();
+        //left.release();
         right.release();
         middle.release();
 
         // return some info
 
-        telemetry.addData("left value", (int) Core.sumElems(left).val[0]);
+        //telemetry.addData("left value", (int) Core.sumElems(left).val[0]);
         telemetry.addData("middle value", (int) Core.sumElems(right).val[0]);
         telemetry.addData("right value", (int) Core.sumElems(middle).val[0]);
-        telemetry.addData("left percent", Math.round(leftV * 100) + "%");
+        //telemetry.addData("left percent", Math.round(leftV * 100) + "%");
         telemetry.addData("middle percent", Math.round(middleV * 100) + "%");
         telemetry.addData("right percent", Math.round(rightV * 100) + "%");
 
         // where stone?
 
-        boolean tseLeft = leftV > PICTURESHOLD;
+        boolean tseLeft = false;
         boolean tseRight = rightV > PICTURESHOLD;
         boolean tseMiddle = middleV > PICTURESHOLD;
+        if(!tseRight && !tseMiddle)
+            tseLeft = true;
 
         if (tseLeft) {
             location = Location.LEFT;
@@ -98,7 +100,7 @@ public class OpenCV extends OpenCvPipeline {
         Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB);
         Scalar tseFound = new Scalar(0, 255, 0);
         Scalar noTSE = new Scalar(255, 0, 0);
-        Imgproc.rectangle(mat, LEFTREGION, location == Location.LEFT? tseFound:noTSE);
+        //Imgproc.rectangle(mat, LEFTREGION, location == Location.LEFT? tseFound:noTSE);
         Imgproc.rectangle(mat, RIGHTREGION, location == Location.RIGHT? tseFound:noTSE);
         Imgproc.rectangle(mat, MIDREGION, location == Location.MIDDLE? tseFound:noTSE);
 
@@ -106,5 +108,22 @@ public class OpenCV extends OpenCvPipeline {
     }
     public Location getLocation() {
         return location;
+    }
+    public int getLocationInt()
+    {
+        int loc = -1;
+        switch (location)
+        {
+            case LEFT:
+                loc = 0;
+                break;
+            case MIDDLE:
+                loc = 1;
+                break;
+            case RIGHT:
+                loc = 2;
+                break;
+        }
+        return loc;
     }
 }

@@ -77,20 +77,8 @@ public class BlueAlianceFar extends LinearOpMode {
 
         robot.dropArm.setPosition(1);
 
-        switch (detector.getLocation())
-        {
-            case LEFT:
-                barcode = 2;
-                break;
-            case RIGHT:
-                barcode= 0;
-                break;
-            case MIDDLE:
-                barcode = 1;
-                break;
-            default:
-                barcode = -1;
-                break;
+        while(barcode == -1) {
+            barcode = detector.getLocationInt();
         }
 
         webcam.stopStreaming();

@@ -45,6 +45,9 @@ public class RedAlianceNear extends LinearOpMode {
 
         Thread.sleep(5000);
 
+        while(barcode == -1) {
+            barcode = detector.getLocationInt();
+        }
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(-36, -70 + 15 / 2, Math.toRadians(90));
