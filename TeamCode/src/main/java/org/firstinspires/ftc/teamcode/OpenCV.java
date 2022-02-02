@@ -35,7 +35,7 @@ public class OpenCV extends OpenCvPipeline {
             new Point(361, 1), //1104, 1
             new Point(719, 1279)); //1379, 360
 
-    static double PICTURESHOLD = .06;
+    static double PICTURESHOLD = .03;
 
     public OpenCV (Telemetry t) { telemetry = t;}
 
@@ -46,7 +46,7 @@ public class OpenCV extends OpenCvPipeline {
         // yellow scale
 
         Scalar low_ylw = new Scalar(10, 100, 20); //orange low hsv(17, 62%, 51%) rgb 255,136,0
-        Scalar high_ylw = new Scalar(25, 255, 255); //orange high hsv(36, 100%, 100%)
+        Scalar high_ylw = new Scalar(20, 255, 255); //orange high hsv(36, 100%, 100%)
         Core.inRange(mat, low_ylw, high_ylw, mat); //create a mask of anything considered "Orange"
 
         // region
