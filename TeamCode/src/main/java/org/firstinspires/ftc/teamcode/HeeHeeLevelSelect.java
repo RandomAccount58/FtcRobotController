@@ -34,7 +34,7 @@ public class HeeHeeLevelSelect extends LinearOpMode {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(1280, 720, OpenCvCameraRotation.SIDEWAYS_LEFT);
             }
 
             @Override
@@ -45,20 +45,7 @@ public class HeeHeeLevelSelect extends LinearOpMode {
         robot.turnOnLights();
         waitForStart();
         while (opModeIsActive()) {
-            switch (detector.getLocation()) {
-                case LEFT:
-                    barcode = 2;
-                    break;
-                case RIGHT:
-                    barcode = 0;
-                    break;
-                case MIDDLE:
-                    barcode = 1;
-                    break;
-                default:
-                    barcode = -1;
-                    break;
-            }
+            barcode = detector.getLocationInt();
 
             if (barcode > -1)
                 robot.nextLevel(robot.levels[barcode]);

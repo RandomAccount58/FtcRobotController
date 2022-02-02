@@ -29,13 +29,13 @@ public class OpenCV extends OpenCvPipeline {
 
     static final Rect MIDREGION = new Rect(
             new Point(1, 1), //552, 1
-            new Point(360, 1380)); //828, 360
+            new Point(360, 1279)); //828, 360
 
     static final Rect RIGHTREGION = new Rect(
             new Point(361, 1), //1104, 1
-            new Point(720, 1380)); //1379, 360
+            new Point(719, 1279)); //1379, 360
 
-    static double PICTURESHOLD = .2; //TODO might want to change
+    static double PICTURESHOLD = .06;
 
     public OpenCV (Telemetry t) { telemetry = t;}
 
