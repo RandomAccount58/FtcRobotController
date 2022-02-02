@@ -56,12 +56,12 @@ public class RedAlianceNear extends LinearOpMode {
                 .forward(15/2)
                 .turn(Math.toRadians(-90))
                 .strafeTo(new Vector2d(-36,-20))
-                .forward(8)
+                .forward(9)
                 .build();
 
         TrajectorySequence secondDrive = drive.trajectorySequenceBuilder(mainDrive.end())
-                .back(8)
-                .splineTo(new Vector2d(-70 + 15/2 + 6,-70 + 15/2 + 6),Math.toRadians(-90))
+                .back(9)
+                .splineTo(new Vector2d(-70 + 15/2 + 6,-70 + 15/2 + 8),Math.toRadians(-90))
                 .build();
 
         TrajectorySequence thirdDrive = drive.trajectorySequenceBuilder(secondDrive.end())
