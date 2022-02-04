@@ -45,10 +45,6 @@ public class RedAlianceNear extends LinearOpMode {
 
         Thread.sleep(5000);
 
-        while(barcode == -1) {
-            barcode = detector.getLocationInt();
-        }
-
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(-36, -70 + 15 / 2, Math.toRadians(90));
 
@@ -56,12 +52,13 @@ public class RedAlianceNear extends LinearOpMode {
                 .forward(15/2)
                 .turn(Math.toRadians(-90))
                 .strafeTo(new Vector2d(-36,-20))
+                .waitSeconds(0.5)
                 .forward(9)
                 .build();
 
         TrajectorySequence secondDrive = drive.trajectorySequenceBuilder(mainDrive.end())
                 .back(9)
-                .splineTo(new Vector2d(-70 + 15/2 + 6,-70 + 15/2 + 8),Math.toRadians(-90))
+                .splineTo(new Vector2d(-70 + 15/2 + 6,-70 + 16),Math.toRadians(-90))
                 .build();
 
         TrajectorySequence thirdDrive = drive.trajectorySequenceBuilder(secondDrive.end())
@@ -71,26 +68,13 @@ public class RedAlianceNear extends LinearOpMode {
 
         robot.turnOnLights();
 
-
-        webcam.stopStreaming();
-
         waitForStart();
 
         while(opModeIsActive()) {
             robot.dropArm.setPosition(1);
 
             while(barcode == -1) {
-                switch (detector.getLocation()) {
-                    case LEFT:
-                        barcode = 0;
-                        break;
-                    case MIDDLE:
-                        barcode = 1;
-                        break;
-                    default:
-                        barcode = 2;
-                        break;
-                }
+                barcode = detector.getLocationInt();
             }
 
             webcam.stopStreaming();

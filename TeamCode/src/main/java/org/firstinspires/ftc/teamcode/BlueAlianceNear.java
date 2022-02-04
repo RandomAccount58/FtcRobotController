@@ -45,9 +45,7 @@ public class BlueAlianceNear extends LinearOpMode {
 
         Thread.sleep(5500);
 
-        while(barcode == -1) {
-            barcode = detector.getLocationInt();
-        }
+
 
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -72,25 +70,13 @@ public class BlueAlianceNear extends LinearOpMode {
 
         robot.turnOnLights();
 
-        webcam.stopStreaming();
-
         waitForStart();
 
         while(opModeIsActive()) {
             robot.dropArm.setPosition(1);
 
             while(barcode == -1) {
-                switch (detector.getLocation()) {
-                    case LEFT:
-                        barcode = 0;
-                        break;
-                    case MIDDLE:
-                        barcode = 1;
-                        break;
-                    default:
-                        barcode = 2;
-                        break;
-                }
+                barcode = detector.getLocationInt();
             }
 
             webcam.stopStreaming();
