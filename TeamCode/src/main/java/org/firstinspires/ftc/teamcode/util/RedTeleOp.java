@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@TeleOp(name = "BlueTeleOp")
-public class TeleOpTest extends LinearOpMode{
+@TeleOp(name = "RedTeleOp")
+public class RedTeleOp extends LinearOpMode{
     private boolean buttonPressed;
     private int lvl;
     private boolean lvlWait = false;
@@ -21,7 +21,7 @@ public class TeleOpTest extends LinearOpMode{
     public void runOpMode()
     {
         waitForStart();
-        robot.initializeRobot(hardwareMap, telemetry, RobotDrive.allianceColor.blue);
+        robot.initializeRobot(hardwareMap, telemetry, RobotDrive.allianceColor.red);
         robot.liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //set led colors based on what alliance you are on
@@ -98,9 +98,9 @@ public class TeleOpTest extends LinearOpMode{
             //turn on the duck wheel when gamepad2's a button is pressed
             if(gamepad2.a)
                 if(robot.teamColor == RobotDrive.allianceColor.blue)
-                robot.duckMotor.setPower(-0.50);
-            else
-                robot.duckMotor.setPower(0.50);
+                    robot.duckMotor.setPower(-0.50);
+                else
+                    robot.duckMotor.setPower(0.50);
             else
                 robot.duckMotor.setPower(0);
 
