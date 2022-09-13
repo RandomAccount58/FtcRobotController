@@ -29,6 +29,7 @@ public class BlueAlianceFar extends LinearOpMode {
         RobotDrive robot = new RobotDrive();
         robot.initializeRobot(hardwareMap,telemetry, RobotDrive.allianceColor.blue);
 
+//hello!
 
         webcam.setPipeline(detector);
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
